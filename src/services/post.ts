@@ -45,7 +45,7 @@ export async function getPost(docId: string) {
 	const document = await getDoc(doc(firestore, POST_DATABASE, docId));
 	return document.exists()
 		? ({ ...document.data(), id: document.id } as Post)
-		: Promise.reject(new Error(`document doesn't exists`));
+		: Promise.reject(`document doesn't exists`);
 }
 
 export function getAllPosts() {

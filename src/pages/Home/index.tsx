@@ -1,48 +1,36 @@
-import { Spinner } from "components/ui";
-import Feed from "feature/Feeds";
-import { useAsync } from "hooks/useAsync";
-import { useEffect } from "react";
-import { getAllPosts, Post } from "services/post";
+import { useAuthContext } from "context/AuthContext";
+import { URL_EXPLORE } from "data/url";
+import Container from "feature/Feeds/Container";
+import { Link } from "react-router-dom";
 import { Story } from "./Story";
 
 export default function Home() {
-	const {
-		isIdle,
-		isLoading,
-		isError,
-		isSuccess,
-		run,
-		error,
-		data: posts,
-	} = useAsync<Post[]>();
+	const auth = useAuthContext();
+	if (!auth) return null;
+	const followings = auth.following || [];
 
-	useEffect(() => {
-		run(getAllPosts());
-	}, [run]);
-
-	switch (true) {
-		case isIdle:
-		case isLoading:
-			return <Spinner fullScreen={true} />;
-		case isError:
-			return <h1>error has accur Home.tsx {error} </h1>;
-		case isSuccess:
-			return (
-				<main>
-					<section>
-						<div className="max-w-md mx-auto">
-							<div className="flex gap-2 overflow-x-scroll my-4 sm:my-10  p-4 rounded-md bg-white border border-gray-300 relative">
-								<Story />
-								<Story />
+	return (
+		<main>
+			<section>
+				<div className="max-w-md mx-auto">
+					<div className="flex gap-2 overflow-x-scroll my-4 sm:my-10  p-4 rounded-md bg-white border border-gray-300 relative">
+						<Story />
+						<Story />
+					</div>
+					<div className="grid gap-8">
+						{followings.length === 0 ? (
+							<div className="text-center capitalize text-base">
+								currently you are not following any user.{" "}
+								<Link to={URL_EXPLORE} className="font-semibold">
+									try exploring some user
+								</Link>
 							</div>
-							<div className="grid gap-8">
-								{posts && posts.map(post => <Feed key={post.id} {...post} />)}
-							</div>
-						</div>
-					</section>
-				</main>
-			);
-		default:
-			return null;
-	}
+						) : (
+							followings.map(arg => <Container key={arg} id={arg} />)
+						)}
+					</div>
+				</div>
+			</section>
+		</main>
+	);
 }

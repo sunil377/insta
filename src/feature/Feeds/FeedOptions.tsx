@@ -5,8 +5,14 @@ import {
 	ModalContent,
 	ModalDissmissButton,
 } from "components/modal";
+import { updateUser } from "services/user";
 
-export default function FeedOptions() {
+interface Props {
+	userId: string;
+	id: string;
+}
+
+export default function FeedOptions({ userId, id }: Props) {
 	return (
 		<Modal>
 			<ModalOpenButton>
@@ -26,9 +32,15 @@ export default function FeedOptions() {
 						</button>
 					</li>
 					<li>
-						<button className="border-t border-gray-300 text-sm py-3.5 capitalize w-full text-red-500">
+						<ModalDissmissButton
+							className="border-t border-gray-300 text-sm py-3.5 capitalize w-full text-red-500"
+							onClick={async () => {
+								await updateUser(userId, "following", id, "remove");
+								await updateUser(id, "followers", userId, "remove");
+							}}
+						>
 							<strong>unfollow</strong>
-						</button>
+						</ModalDissmissButton>
 					</li>
 					<li>
 						<button className="border-t border-gray-300 text-sm py-3.5 capitalize w-full">

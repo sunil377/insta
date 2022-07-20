@@ -25,7 +25,7 @@ export default function Feed(post: Post) {
 	const [mediaURL, setMediaURL] = useState("");
 	const [isMediaLoading, setMediaLoading] = useState(true);
 
-	const user = useAuthContext();
+	const auth = useAuthContext();
 
 	useEffect(() => {
 		getMediaURL(mediaPath)
@@ -33,7 +33,7 @@ export default function Feed(post: Post) {
 			.then(() => setMediaLoading(false));
 	}, [mediaPath]);
 
-	if (!user) {
+	if (!auth) {
 		return null;
 	}
 
@@ -61,7 +61,7 @@ export default function Feed(post: Post) {
 					<Username />
 				</p>
 				<div>
-					<FeedOptions />
+					<FeedOptions userId={auth.id} id={userid} />
 				</div>
 			</header>
 			<div className="grid place-items-center aspect-square border">
@@ -78,9 +78,9 @@ export default function Feed(post: Post) {
 			<footer className="p-4 text-sm space-y-3">
 				<div className="flex gap-4 items-center">
 					<LikeButton
-						userId={user.id}
+						userId={auth.id}
 						postId={post.id}
-						isLiked={post.likes?.includes(user.id) || false}
+						isLiked={post.likes?.includes(auth.id) || false}
 					/>
 					<button>
 						<CommentSVG
@@ -104,8 +104,8 @@ export default function Feed(post: Post) {
 					</button>
 					<SavedButton
 						postId={postId}
-						userId={user.id}
-						isSaved={user.saved?.includes(postId) || false}
+						userId={auth.id}
+						isSaved={auth.saved?.includes(postId) || false}
 					/>
 				</div>
 				<div className="space-y-2">

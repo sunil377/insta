@@ -1,5 +1,7 @@
 export const URL_FORGOT_PASSWORD = "/forgot-password";
 export const URL_SIGNUP = "/signup";
+export const URL_EXPLORE = "/explore";
+
 export const URL_LOGIN = "/";
 export const URL_HOME = "/";
 export const URL_MESSENGER = "/message";

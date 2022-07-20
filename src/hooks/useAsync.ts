@@ -18,11 +18,17 @@ export function useAsync<T>(
 
 	const setData = useCallback(
 		(arg: T | null) =>
-			setState({
-				data: arg,
-				error: null,
-				status: "resolved",
-			}),
+			arg === null
+				? setState({
+						data: null,
+						error: null,
+						status: "rejected",
+				  })
+				: setState({
+						data: arg,
+						error: null,
+						status: "resolved",
+				  }),
 		[]
 	);
 

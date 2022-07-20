@@ -23,8 +23,8 @@ export default function FollowingButton({
 	return !isFollowings ? (
 		<Button
 			onClick={async function () {
-				await updateUser(userId, "followers", id, "add");
-				await updateUser(id, "following", userId, "add");
+				await updateUser(userId, "following", id, "add");
+				await updateUser(id, "followers", userId, "add");
 			}}
 		>
 			Follow
