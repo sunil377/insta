@@ -16,22 +16,6 @@ export function useAsync<T>(
 ) {
 	const [state, setState] = useState<State<T>>(initialState);
 
-	const setData = useCallback(
-		(arg: T | null) =>
-			arg === null
-				? setState({
-						data: null,
-						error: null,
-						status: "rejected",
-				  })
-				: setState({
-						data: arg,
-						error: null,
-						status: "resolved",
-				  }),
-		[]
-	);
-
 	const run = useCallback((promise: Promise<any>) => {
 		if (!promise || !promise.then) {
 			throw new Error(
@@ -72,6 +56,5 @@ export function useAsync<T>(
 		isError: status === "rejected",
 		isLoading: status === "pending",
 		isSuccess: status === "resolved",
-		setData,
 	};
 }

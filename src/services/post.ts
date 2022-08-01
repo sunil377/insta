@@ -17,9 +17,9 @@ export interface PostWithoutId {
 	userid: string;
 	username: string;
 	mediaPath: string;
-	caption?: string;
-	comments?: string[];
-	likes?: string[];
+	caption: string;
+	comments: string[];
+	likes: string[];
 	createdAt?: Timestamp;
 }
 
@@ -28,14 +28,10 @@ export interface Post extends PostWithoutId {
 }
 
 export function createPost({
-	comments = [],
-	likes = [],
 	createdAt = Timestamp.fromDate(new Date()),
 	...data
 }: PostWithoutId) {
 	return addDoc(collection(firestore, POST_DATABASE), {
-		comments,
-		likes,
 		createdAt,
 		...data,
 	});

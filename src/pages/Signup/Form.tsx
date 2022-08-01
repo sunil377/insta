@@ -35,6 +35,11 @@ export default function Form() {
 						email,
 						fullName,
 						username,
+						followers: [],
+						following: [],
+						posts: [],
+						saved: [],
+						profile: null,
 					});
 				} catch (error) {
 					setErrors({ ...LogError("signup", error) });

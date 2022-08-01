@@ -5,33 +5,33 @@ import { getUser } from "services/user";
 import Post from "./Post";
 
 export default function Posts({ which }: { which: "posts" | "saved" }) {
-	const user = useAuthContext();
+	const authUser = useAuthContext();
 	const { id } = useParams<{ id: string }>();
 	const [ids, setIds] = useState<string[]>([]);
 
 	useEffect(() => {
-		if (!user || !id) {
+		if (!authUser || !id) {
 			return;
 		}
 
 		switch (which) {
 			case "posts":
-				user.id === id
-					? user.posts && setIds(user.posts)
+				authUser.id === id
+					? authUser.posts && setIds(authUser.posts)
 					: getUser(id).then(res => res.posts && setIds(res.posts));
 				break;
 			case "saved":
-				user.id === id
-					? user.saved && setIds(user.saved)
+				authUser.id === id
+					? authUser.saved && setIds(authUser.saved)
 					: getUser(id).then(res => res.saved && setIds(res.saved));
 				break;
 		}
-	}, [user, id, which]);
+	}, [authUser, id, which]);
 
 	return (
 		<section className="pb-10 overflow-hidden">
 			{ids.length > 0 ? (
-				<div className="grid grid-cols-3 justify-items-center gap-1.5">
+				<div className="grid grid-cols-3 justify-items-center gap-10">
 					{ids.map(arg => (
 						<Post id={arg} key={arg} />
 					))}

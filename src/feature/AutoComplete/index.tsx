@@ -1,6 +1,6 @@
 import { Combobox, Transition } from "@headlessui/react";
 import { get_url_profile } from "data/url";
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { FaCheck, FaSearch } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { User } from "services/user";
@@ -8,21 +8,18 @@ import { useCombo } from "./useCombo";
 
 export function AutoComplete() {
 	const { selected, query, setSelected, setQuery, options } = useCombo();
-	const [isFocused, setFocused] = useState(false);
 
 	return (
 		<Combobox value={selected} onChange={setSelected}>
 			<div className="relative mt-1">
 				<div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-red-700 focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
 					<Combobox.Input
-						className="w-full border-none min-w-[260px] py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-0 focus:outline-none bg-gray-200"
+						className="w-full border-none min-w-[260px] py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-0 focus:outline-none bg-gray-200/80"
 						placeholder="Search"
 						displayValue={(person: null | User) =>
 							person ? person.username : query
 						}
 						onChange={event => setQuery(event.target.value)}
-						onFocus={() => setFocused(true)}
-						onBlur={() => setFocused(false)}
 					/>
 					<Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
 						<FaSearch className="h-5 w-5 text-gray-400" aria-hidden="true" />
@@ -33,7 +30,9 @@ export function AutoComplete() {
 					leave="transition ease-in duration-100"
 					leaveFrom="opacity-100"
 					leaveTo="opacity-0"
-					afterLeave={() => setQuery("")}
+					afterLeave={() => {
+						setQuery("");
+					}}
 				>
 					<Combobox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none text-sm z-10">
 						{options.length === 0 && query !== "" ? (

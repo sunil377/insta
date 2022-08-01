@@ -3,12 +3,12 @@
 @tailwind utilities;
 
 @layer components {
-	.form-input > input:focus + span,
-	.form-input > input[data-isdirty="true"] + span {
-		@apply scale-75 -translate-y-2;
-	}
-	.form-input > input:focus,
-	.form-input > input[data-isdirty="true"] {
-		@apply translate-y-1.5;
-	}
+  .form-input > input:focus + span,
+  .form-input > input[data-isdirty='true'] + span {
+    @apply scale-75 -translate-y-2;
+  }
+  .form-input > input:focus,
+  .form-input > input[data-isdirty='true'] {
+    @apply translate-y-1.5;
+  }
 }

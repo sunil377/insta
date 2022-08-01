@@ -8,6 +8,11 @@ module.exports = {
 					main: "rgba(0 149 246 / 1)",
 					blue: "rgba(0 55 107 / 1 )",
 				},
+				gray: {
+					normal: "rgba(38 38 38 / 1)",
+					light: "rgba(142 142 142 / 1)",
+					separator: "rgba(219 219 219 / 1)",
+				},
 			},
 			screens: {
 				xs: "450px",

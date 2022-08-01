@@ -1,6 +1,7 @@
 export const URL_FORGOT_PASSWORD = "/forgot-password";
 export const URL_SIGNUP = "/signup";
 export const URL_EXPLORE = "/explore";
+export const URL_EXPLORE_POST = "/p/:postId";
 
 export const URL_LOGIN = "/";
 export const URL_HOME = "/";
@@ -16,3 +17,4 @@ export const get_url_posts = (id: string) => "/" + id;
 export const get_url_vidoes = (id: string) => "/" + id + "/channel";
 export const get_url_saved = (id: string) => "/" + id + "/saved";
 export const get_url_tagged = (id: string) => "/" + id + "/tagged";
+export const get_url_explore_post = (postId: string) => "/p/" + postId;
