@@ -38,7 +38,10 @@ function AuthProvider({ ...props }) {
 
   useEffect(() => {
     if (isPending) return
-    return snapShotRun(user?.uid)
+
+    const unsubscribe = snapShotRun(user?.uid)
+
+    return unsubscribe
   }, [snapShotRun, user, isPending])
 
   useEffect(() => {

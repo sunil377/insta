@@ -1,13 +1,5 @@
-import {
-  arrayRemove,
-  arrayUnion,
-  doc,
-  getDoc,
-  setDoc,
-  updateDoc,
-  where,
-} from 'firebase/firestore'
-import { firestore, USER_DATABASE } from 'lib/firebase/firestore'
+import { arrayRemove, arrayUnion, doc, limit, setDoc, updateDoc, where } from 'firebase/firestore'
+import { firestore, getDocumentOnce, USER_DATABASE } from 'lib/firebase/firestore'
 import { queryFor } from './util'
 
 export interface UserWithoutId {
@@ -30,14 +22,15 @@ export function createUser(docId: string, data: UserWithoutId) {
 }
 
 export async function getUser(docId: string) {
-  const document = await getDoc(doc(firestore, USER_DATABASE, docId))
-  return document.exists()
-    ? ({ ...document.data(), id: document.id } as User)
-    : Promise.reject(`document doesn't exists`)
+  return await getDocumentOnce<User>(docId, USER_DATABASE)
 }
 
 export function getAllUserByUsername(username: string) {
   return queryFor<User>(USER_DATABASE, where('username', '==', username))
+}
+
+export function getUsers() {
+  return queryFor<User>(USER_DATABASE, limit(5))
 }
 
 export function updateUser(

@@ -16,7 +16,7 @@ export default function Authenticated() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path={url.URL_EXPLORE} element={<Explore />} />
-        <Route path={url.URL_EXPLORE_POST} element={<SinglePost />} />
+        <Route path={url.URL_SINGLE_POST} element={<SinglePost />} />
 
         <Route path={url.URL_PROFILE} element={<Profile />}>
           <Route path={url.URL_POSTS} element={<Posts which="posts" />} />

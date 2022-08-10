@@ -1,7 +1,11 @@
-import { PostSVG, SavedSVG, TaggedSVG, VideosSVG } from 'assets/svg/svg'
 import * as url from 'data/url'
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import { User } from 'services/user'
+
+import { ReactComponent as PostSvg } from 'assets/svg/post.svg'
+import { ReactComponent as VideoSvg } from 'assets/svg/video.svg'
+import { ReactComponent as SavedSvg } from 'assets/svg/saved.svg'
+import { ReactComponent as TaggedSvg } from 'assets/svg/tagged.svg'
 
 export default function Main({ id }: Pick<User, 'id'>) {
   const { pathname } = useLocation()
@@ -16,46 +20,47 @@ export default function Main({ id }: Pick<User, 'id'>) {
     {
       name: 'posts',
       to: url.get_url_posts(id),
-      Icon: PostSVG,
+      Icon: PostSvg,
       active: isPostActive,
     },
     {
       name: 'videos',
       to: url.get_url_vidoes(id),
-      Icon: VideosSVG,
+      Icon: VideoSvg,
       active: isVideosActive,
     },
     {
       name: 'saved',
       to: url.get_url_saved(id),
-      Icon: SavedSVG,
+      Icon: SavedSvg,
       active: isSavedActive,
     },
     {
       name: 'tagged',
       to: url.get_url_tagged(id),
-      Icon: TaggedSVG,
+      Icon: TaggedSvg,
       active: isTaggedActive,
     },
   ]
 
   return (
     <section>
-      <ul className="flex justify-around text-center px-4 py-1 md:border-gray-separator md:border-t">
+      <ul className="flex justify-center space-x-14 px-4 text-center md:border-t md:border-gray-separator">
         {content.map(({ name, active, Icon, to }) => (
           <li key={name}>
             <Link
               to={to}
-              className={`text-sm py-2.5 items-center inline-flex sm:gap-x-2`}
+              className={`inline-flex items-center py-2.5 text-sm sm:gap-x-2 ${
+                active ? 'border-t border-black text-black' : 'text-gray-light'
+              }`}
             >
               <Icon
                 aria-label={name}
-                color={active ? '#0095f6' : 'currentColor'}
-                fill={active ? '#0095f6' : 'currentColor'}
-                height="24"
-                width="24"
+                height="12"
+                width="12"
+                className={active ? 'text-black' : 'text-gray-light'}
               />
-              <span className="hidden md:inline uppercase">{name}</span>
+              <span className="hidden uppercase md:inline">{name}</span>
             </Link>
           </li>
         ))}

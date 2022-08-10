@@ -3,9 +3,7 @@ import { useAsync } from 'hooks/useAsync'
 import { firestore, POST_DATABASE, USER_DATABASE } from 'lib/firebase/firestore'
 import { useCallback } from 'react'
 
-export default function useSnapShot<T>(
-  database: typeof USER_DATABASE | typeof POST_DATABASE,
-) {
+export default function useSnapShot<T>(database: typeof USER_DATABASE | typeof POST_DATABASE) {
   const { run, ...rest } = useAsync<T>()
 
   const snapShotRun = useCallback(

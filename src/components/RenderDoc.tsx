@@ -1,9 +1,8 @@
 import { Spinner } from 'components/ui'
 import { POST_DATABASE, USER_DATABASE } from 'lib/firebase/firestore'
+import { docType } from 'lib/firebase/util'
 import { useEffect } from 'react'
 import useSnapShot from 'services/useSnapShot'
-
-type docType<R> = R extends any ? R & { id: string } : never
 
 interface Props<T> {
   docId: string
@@ -12,12 +11,7 @@ interface Props<T> {
   error?: JSX.Element
 }
 
-function RenderDoc<T>({
-  docId,
-  RenderComponent,
-  docName,
-  error: err,
-}: Props<T>) {
+function RenderDoc<T>({ docId, RenderComponent, docName, error: err }: Props<T>) {
   const {
     data: responseData,
     snapShotRun,
@@ -33,7 +27,11 @@ function RenderDoc<T>({
   switch (true) {
     case isIdle:
     case isLoading:
-      return <Spinner />
+      return (
+        <div className="inline-grid h-full w-full place-items-center">
+          <Spinner />
+        </div>
+      )
 
     case isError:
       if (err) return err

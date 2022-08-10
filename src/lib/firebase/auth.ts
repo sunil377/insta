@@ -1,36 +1,37 @@
 import {
-	createUserWithEmailAndPassword,
-	getAuth,
-	GoogleAuthProvider,
-	NextOrObserver,
-	onAuthStateChanged,
-	signInWithEmailAndPassword,
-	signOut,
-	User,
-} from "firebase/auth";
-import { firebaseApp } from "./app";
-import firebaseui, { auth as firebaseUiAuth } from "firebaseui";
+  createUserWithEmailAndPassword,
+  getAuth,
+  GoogleAuthProvider,
+  NextOrObserver,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut,
+  User,
+} from 'firebase/auth'
+import firebaseui, { auth as firebaseUiAuth } from 'firebaseui'
+import { firebaseApp } from './app'
 
-const auth = getAuth(firebaseApp);
+const auth = getAuth(firebaseApp)
 
 export const onAuthListener = (callback: NextOrObserver<User>) =>
-	onAuthStateChanged(auth, callback, err => {
-		throw new Error(`something worng with onAuthStateChanged ${err}`);
-	});
+  onAuthStateChanged(auth, callback, err => {
+    throw new Error(`something worng with onAuthStateChanged ${err}`)
+  })
 
 export const signup = (username: string, password: string) =>
-	createUserWithEmailAndPassword(auth, username, password);
+  createUserWithEmailAndPassword(auth, username, password)
 
 export const login = (username: string, password: string) =>
-	signInWithEmailAndPassword(auth, username, password);
+  signInWithEmailAndPassword(auth, username, password)
 
-export const logout = () => signOut(auth);
+export const logout = () => signOut(auth)
 
 /* firebase ui */
 
-export const authUI = new firebaseUiAuth.AuthUI(auth);
+export const authUI = new firebaseUiAuth.AuthUI(auth)
 
 export const uiConfig: firebaseui.auth.Config = {
-	signInFlow: "popup",
-	signInOptions: [GoogleAuthProvider.PROVIDER_ID],
-};
+  signInFlow: 'popup',
+  signInOptions: [GoogleAuthProvider.PROVIDER_ID],
+  signInSuccessUrl: '/',
+}

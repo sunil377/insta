@@ -1,15 +1,12 @@
-import {
-  Modal,
-  ModalContent,
-  ModalDismissButton,
-  ModalOpenIconButton,
-} from 'components/modal'
+import { Dialog, Transition } from '@headlessui/react'
+import { ReactComponent as FollowingSvg } from 'assets/svg/following.svg'
+import { ReactComponent as OptionSvg } from 'assets/svg/option.svg'
 import { Button, IconButton } from 'components/ui'
 import { useSafeAuthContext } from 'context/AuthContext'
-import { useActionFollowing } from 'feature/Feeds/hooks'
+import { useModal } from 'hooks/hooks'
+import { useActionFollowing } from 'hooks/useAction'
 import { Fragment } from 'react'
 import { User } from 'services/user'
-import { followingIcon, optionsIcon } from './assets/svg'
 import Main from './Main'
 import ProfilePic from './ProfilePic'
 
@@ -43,30 +40,30 @@ export default function MyProfile({
 
   return (
     <Fragment>
-      <section className="py-4 md:py-10 text-gray-normal grid sm:grid-cols-12 gap-y-5">
-        <div className="sm:col-span-9 md:col-span-10 px-4 md:px-0">
+      <section className="grid gap-y-5 py-4 text-gray-normal sm:grid-cols-12 md:py-10">
+        <div className="px-4 sm:col-span-9 md:col-span-10 md:px-0">
           <div className="grid grid-cols-4 gap-y-2">
-            <div className="col-span-1 md:row-span-2 md:col-span-2">
+            <div className="col-span-1 md:col-span-2 md:row-span-2">
               <div className="grid place-items-center">
-                {profile && (
-                  <ProfilePic imageURL={profile} username={username} />
-                )}
+                <ProfilePic imageURL={profile} username={username} />
               </div>
             </div>
             <div className="col-span-3 max-w-[16rem] md:col-span-2 md:max-w-[32rem]">
-              <div className="grid pl-4 md:pl-0 grid-cols-4 md:grid-cols-6 gap-2">
+              <div className="grid grid-cols-4 gap-2 pl-4 md:grid-cols-6 md:pl-0">
                 <div className="col-span-4 md:col-span-6">
-                  <div className="grid md:flex gap-2 md:gap-4">
+                  <div className="grid gap-2 md:flex md:gap-4">
                     <div className="col-span-3 md:order-1">
                       <h1 className="text-big font-thin">{username}</h1>
                     </div>
                     {isSelf ? (
                       <Fragment>
                         <div className="col-span-1 md:order-3">
-                          <IconButton>{optionsIcon}</IconButton>
+                          <IconButton>
+                            <OptionSvg />
+                          </IconButton>
                         </div>
-                        <div className="col-span-4 md:col-span-2 md:order-2">
-                          <button className="border block w-full md:px-4 border-gray-separator rounded font-semibold text-sm py-1">
+                        <div className="col-span-4 md:order-2 md:col-span-2">
+                          <button className="block w-full rounded border border-gray-separator py-1 text-sm font-semibold md:px-4">
                             Edit Profile
                           </button>
                         </div>
@@ -78,14 +75,12 @@ export default function MyProfile({
                     )}
                   </div>
                 </div>
-                <div className="md:col-span-6 hidden md:block md:order-4">
+                <div className="hidden md:order-4 md:col-span-6 md:block">
                   <div className="flex gap-x-4 py-4">
                     {infosAboutPost.map(item => (
                       <button key={item.name}>
                         <span className="font-semibold">{item.count}</span>
-                        <span className="ml-1.5 text-gray-900">
-                          {item.name}
-                        </span>
+                        <span className="ml-1.5 text-gray-900">{item.name}</span>
                       </button>
                     ))}
                   </div>
@@ -93,10 +88,8 @@ export default function MyProfile({
               </div>
             </div>
 
-            <div className="col-span-4 text-sm md:text-base md:col-span-2">
-              <h4 className="font-semibold capitalize text-gray-900">
-                {fullName}
-              </h4>
+            <div className="col-span-4 text-sm md:col-span-2 md:text-base">
+              <h4 className="font-semibold capitalize text-gray-900">{fullName}</h4>
               <p>Genuine and funny that's what i think anyway...</p>
               <p>You naver wrong to do the right thing...</p>
             </div>
@@ -104,12 +97,9 @@ export default function MyProfile({
         </div>
 
         <div className="col-span-12 text-sm md:hidden">
-          <div className="grid grid-cols-3 border place-items-center border-gray-separator py-2">
+          <div className="grid grid-cols-3 place-items-center border border-gray-separator py-2">
             {infosAboutPost.map(item => (
-              <button
-                className="inline-grid place-items-center"
-                key={item.name}
-              >
+              <button type="button" className="inline-grid place-items-center" key={item.name}>
                 <span className="font-semibold ">{item.count}</span>
                 <span className="text-gray-light">{item.name}</span>
               </button>
@@ -122,42 +112,48 @@ export default function MyProfile({
   )
 }
 
-function FollowingButton({
-  followerId,
-  username,
-}: {
-  followerId: string
-  username: string
-}) {
+function FollowingButton({ followerId, username }: { followerId: string; username: string }) {
   const { isFollowings, toggleFollowing } = useActionFollowing(followerId)
+  const { isOpen, openModal, closeModal } = useModal()
 
   return !isFollowings ? (
     <Button onClick={toggleFollowing}>Follow</Button>
   ) : (
-    <Modal>
-      <ModalOpenIconButton className="border rounded px-6 py-1.5">
-        {followingIcon}
-      </ModalOpenIconButton>
-      <ModalContent className="min-w-[300px]">
-        <div className="text-center py-5">
-          <h1>unfollow @{username} ?</h1>
-        </div>
-        <ul className="text-sm">
-          <li>
-            <Button
-              className="border-t text-red-500 block w-full text-center py-2.5"
-              onClick={toggleFollowing}
-            >
-              unFollow
-            </Button>
-          </li>
-          <li>
-            <ModalDismissButton className="border-t block w-full text-center py-2.5">
-              Cancel
-            </ModalDismissButton>
-          </li>
-        </ul>
-      </ModalContent>
-    </Modal>
+    <>
+      <button
+        type="button"
+        title="following"
+        onClick={openModal}
+        className="rounded border px-6 py-1.5"
+      >
+        <FollowingSvg />
+      </button>
+      <Transition appear show={isOpen}>
+        <Dialog onClose={closeModal} className="min-w-[300px]">
+          <div className="py-5 text-center">
+            <h1>unfollow @{username} ?</h1>
+          </div>
+          <ul className="text-sm">
+            <li>
+              <Button
+                className="block w-full border-t py-2.5 text-center text-red-500"
+                onClick={toggleFollowing}
+              >
+                unFollow
+              </Button>
+            </li>
+            <li>
+              <button
+                type="button"
+                onClick={closeModal}
+                className="block w-full border-t py-2.5 text-center"
+              >
+                Cancel
+              </button>
+            </li>
+          </ul>
+        </Dialog>
+      </Transition>
+    </>
   )
 }
